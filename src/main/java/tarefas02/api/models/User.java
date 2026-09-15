@@ -78,11 +78,11 @@ public class User {
     }
 
     public List<Task> getTasks() {
-        return tasks;
+        return task;
     }
 
     public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+        this.task = tasks;
     }
 
     @Override
