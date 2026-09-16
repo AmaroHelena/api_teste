@@ -1,5 +1,7 @@
+//Declara o caminho onde a classe esta dentro do codigo
 package tarefas02.api.services;
 
+//importa optinal, usado para tratar valores que podem nao estar presente
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import tarefas02.api.models.User;
 import tarefas02.api.repositories.TaskRepository;
 import tarefas02.api.repositories.UserRepository;
 
+//anotacao que indica no spring que classe contem as regras de negocios da entidade user
 @Service
 public class UserService {
 
@@ -20,6 +23,7 @@ public class UserService {
     private TaskRepository taskRepository;
 
     public User findById(Long id) {
+
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new RuntimeException(
             "Usuário não encontrado! Id: " + id + ", Tipo: " + User.class.getName()
