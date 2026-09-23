@@ -39,15 +39,31 @@ public class UserController {
 
     } // Fim do metodo FindById
 
- @PostMapping("path")
- public ResponseEntity<Void> create(@Validated (CreateUser.class) @RequestBody User obj ){
-      this.userService.create(obj);
-      URI url = ServletUriComponentsBuilder.fromCurrentRequest()
-      .path("/{id}").buildAndExpand(obj.getId()).toUri();
-      return ResponseEntity.created(url).build();
+ @PostMapping("path") // Mapeia requisições HTTP POST na rota base "/user"(Criaçao de novo usuario)
+ public ResponseEntity<Void> create(@Validated (CreateUser.class) @RequestBody User obj ){ //  Valida regra de CrateUser e desserializa o corpo JSON
+      this.userService.create(obj); // Chama a camada de serviço para persistir o novo banco de dados
+      URI url = ServletUriComponentsBuilder.fromCurrentRequest() // Obtem a rota da requisicao atual
+      .path("/{id}").buildAndExpand(obj.getId()).toUri(); // Adiciona o id do usuario gerado no final do caminho da URI
+      return ResponseEntity.created(url).build(); // Retorna codigo HTTP 201 (create) comtendo a URL no cabecolha location
 
  }
  
+  @PutMapping("/{id}")// Mapeia requisicoes HTTP PUT na rota base "/user/ {id}" (atualizacao do usuario)
+  public ResponseEntity<Void> update(@Validated (UpdateUser.class)@RequestBody User obj, @PathVariable Long id){ // Aplica a regra de updateuser a receber Id e Json
+     obj.setId(id); // Garante que id do objto a ser atualizado corresponde ao ID informado no parametro da URL
+     this.userService.update(obj); // Executa a atualização da senha d usuario no banco de dados
+     return ResponseEntity.noContent().build();//Retorna codigo HTTP 204(No Content) indicando sucesso sem corpo de resposta
+
+  }
+   
+  @DeleteMapping ("/{id}") // Mapeia requisicoes HTTP DELETE na rota "/user{id}" (excluisao de usuario)
+  public ResponseEntity<Void> delete(@PathVariable Long id ){ // Captura o ID da URL a ser deletado
+  this.userService.delete(id); // Invoca o metodo de deleçao do servico
+  return ResponseEntity.noContent().build(); // Retorna codigo HTTP 204 (No Content) confirmado a exclusao
+
+  }
+ 
+  
  
  }
  
